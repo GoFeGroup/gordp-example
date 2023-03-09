@@ -41,5 +41,11 @@ func rdpProxy(ctx *gin.Context) {
 	})
 
 	core.ThrowError(client.Connect())
-	core.ThrowError(client.Run(&Processor{ws: ws}))
+	go func() {
+		core.ThrowError(client.Run(&Processor{ws: ws}))
+	}()
+	for {
+		_, _, err := ws.ReadMessage()
+		core.ThrowError(err)
+	}
 }
