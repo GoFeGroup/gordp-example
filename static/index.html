@@ -31,9 +31,13 @@
 
         ws.onerror = function (e) {
             console.log('error:', e)
+            $('#canvas').unbind('mousedown').unbind('mouseup').unbind('mousemove')
+                .unbind('contextmenu').unbind('keydown').unbind('keyup')
         }
         ws.onclose = function (e) {
             console.log('close:', e)
+            $('#canvas').unbind('mousedown').unbind('mouseup').unbind('mousemove')
+                .unbind('contextmenu').unbind('keydown').unbind('keyup')
         }
         ws.onmessage = function (msg) {
             let {bitmap} = JSON.parse(msg.data)
