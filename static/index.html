@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GoWebRDP</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/jquery.md5.min.js"></script>
+</head>
+<body>
+<canvas id="canvas" tabindex="0"></canvas>
+
+<script>
+    var w = window.innerWidth
+    var h = window.innerHeight
+
+    function resizeCanvas() {
+        w = window.innerWidth
+        h = window.innerHeight
+        $('#canvas').attr('width', window.innerWidth)
+        $('#canvas').attr('height', window.innerHeight)
+    }
+
+    let cnt = 0
+
+    function createWebsocket() {
+        var ws = new WebSocket('ws://' + window.location.host + '/api/rdp')
+        ws.onopen = function () {
+        }
+
+        ws.onerror = function (e) {
+            console.log('error:', e)
+        }
+        ws.onclose = function (e) {
+            console.log('close:', e)
+        }
+        ws.onmessage = function (msg) {
+            let {bitmap} = JSON.parse(msg.data)
+            let img = new Image(bitmap.w, bitmap.h)
+            img.src = 'data:image/png;base64,' + bitmap.data
+            img.onload = () => {
+                let ctx = $('#canvas')[0].getContext('2d')
+                ctx.drawImage(img, bitmap.x, bitmap.y)
+            }
+        }
+
+        return ws
+    }
+
+    function mousePosition(e) {
+        let offset = $("#canvas").offset()
+        return {
+            x: e.clientX - offset.left,
+            y: e.clientY - offset.top,
+            btn: e.button,
+        }
+    }
+
+    $(function () {
+        resizeCanvas()
+        let ws = createWebsocket()
+
+        $(window).resize(function () {
+            resizeCanvas()
+        })
+
+        $('#canvas').focus()
+
+        // console.log($('#canvas'))
+        $("#canvas").mousedown(function (e) {
+            let {x, y, btn} = mousePosition(e)
+            ws.send(JSON.stringify({"mouse": {"type": "mousedown", "x": x, "y": y, "btn": btn}}))
+        })
+        $("#canvas").mouseup(function (e) {
+            let {x, y, btn} = mousePosition(e)
+            ws.send(JSON.stringify({"mouse": {"type": "mouseup", "x": x, "y": y, "btn": btn}}))
+        })
+        $("#canvas").mousemove(function (e) {
+            let {x, y, btn} = mousePosition(e)
+            ws.send(JSON.stringify({"mouse": {"type": "mousemove", "x": x, "y": y, "btn": btn}}))
+        })
+        $("#canvas").contextmenu(function (e) { // 鼠标右键
+            e.preventDefault()
+
+            let {x, y, btn} = mousePosition(e)
+            ws.send(JSON.stringify({"mouse": {"type": "mouseright", "x": x, "y": y, "btn": btn}}))
+        })
+        $("#canvas").keydown(function (e) {
+            ws.send(JSON.stringify({"keyboard": {"type": "keydown", "k": e.keyCode }}))
+        })
+        $("#canvas").keyup(function (e) {
+            ws.send(JSON.stringify({"keyboard": {"type": "keyup", "k": e.keyCode }}))
+        })
+    })
+</script>
+</body>
+</html>
