@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"github.com/GoFeGroup/gordp/glog"
 	"net/http"
 
 	"github.com/GoFeGroup/gordp"
@@ -45,7 +47,26 @@ func rdpProxy(ctx *gin.Context) {
 		core.ThrowError(client.Run(&Processor{ws: ws}))
 	}()
 	for {
-		_, _, err := ws.ReadMessage()
+		_, msgBytes, err := ws.ReadMessage()
 		core.ThrowError(err)
+
+		msg := Message{}
+		core.ThrowError(json.Unmarshal(msgBytes, &msg))
+		glog.Debugf("msg: %+v", msg.Mouse)
+
+		if msg.Keyboard != nil {
+
+		}
+
+		if msg.Mouse != nil {
+			switch msg.Mouse.Type {
+			case "mousemove":
+				//client.SendMouseEvent()
+			case "mousedown":
+			case "mouseup":
+			case "mouseright":
+			}
+		}
+
 	}
 }
