@@ -2,11 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/GoFeGroup/gordp/glog"
 	"net/http"
 
 	"github.com/GoFeGroup/gordp"
 	"github.com/GoFeGroup/gordp/core"
+	"github.com/GoFeGroup/gordp/glog"
 	"github.com/GoFeGroup/gordp/proto/bitmap"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -61,9 +61,11 @@ func rdpProxy(ctx *gin.Context) {
 		if msg.Mouse != nil {
 			switch msg.Mouse.Type {
 			case "mousemove":
-				//client.SendMouseEvent()
+				client.SendMouseMoveEvent(uint16(msg.Mouse.X), uint16(msg.Mouse.Y))
 			case "mousedown":
+				client.SendMouseLeftDownEvent(uint16(msg.Mouse.X), uint16(msg.Mouse.Y))
 			case "mouseup":
+				client.SendMouseLeftUpEvent(uint16(msg.Mouse.X), uint16(msg.Mouse.Y))
 			case "mouseright":
 			}
 		}

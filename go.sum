@@ -1,5 +1,5 @@
-github.com/GoFeGroup/gordp v0.0.3 h1:hVtLBCJ/ieDCWSuNhUmSa7T+Sv8J+jxzMsJftcXxstA=
-github.com/GoFeGroup/gordp v0.0.3/go.mod h1:gyNnKMeWiUiUaao0fBKVfXOVwv0H1wZn4avtqFSFYWU=
+github.com/GoFeGroup/gordp v0.0.4-0.20230314010846-325d772f40aa h1:d/VSpPRq36cq9ikdsLKlsSOK1fNAgQlFsOEAfY+/VeY=
+github.com/GoFeGroup/gordp v0.0.4-0.20230314010846-325d772f40aa/go.mod h1:gyNnKMeWiUiUaao0fBKVfXOVwv0H1wZn4avtqFSFYWU=
 github.com/bytedance/sonic v1.5.0/go.mod h1:ED5hyg4y6t3/9Ku1R6dU/4KyJ48DZ4jPhfY1O2AihPM=
 github.com/bytedance/sonic v1.8.3 h1:pf6fGl5eqWYKkx1RcD4qpuX+BIUaduv/wTm5ekWJ80M=
 github.com/bytedance/sonic v1.8.3/go.mod h1:i736AoUSYt75HyZLoJW9ERYxcy6eaN6h4BZXU064P/U=

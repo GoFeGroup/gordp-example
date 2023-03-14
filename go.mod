@@ -3,7 +3,7 @@ module gordp-example
 go 1.19
 
 require (
-	github.com/GoFeGroup/gordp v0.0.3
+	github.com/GoFeGroup/gordp v0.0.4-0.20230314010846-325d772f40aa
 	github.com/gin-gonic/gin v1.9.0
 	github.com/gorilla/websocket v1.5.0
 )
